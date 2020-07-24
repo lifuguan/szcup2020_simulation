@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 10:35:16
- * @LastEditTime: 2020-07-24 16:37:13
+ * @LastEditTime: 2020-07-24 19:45:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \szcup2020_simulation\README.md
@@ -57,8 +57,9 @@ Distance: 39305m
 ### 参数
   
 - $x_1,x_2,\cdots,x_{30}$：假设每个节点的电池容量
-- $r_1,r_2,\cdots,r_{30}$：每个节点的电池充电速度
 - $c_1,c_2,\cdots,c_{30}$：每个节点的电池消耗速度
+- $r(mA/s)$：电池充电速度
+- $f$：最低工作电量
 - $v(m/s)$：移动充电器移动速度
 - $dst$：总路程
 
@@ -67,46 +68,45 @@ Distance: 39305m
 - **电池容量推导**：$x_i=t_{tot}\cdot c_i+f$
 
 ### 约束条件
-$$x_{i} = [dst/v+\sum_{i=1}^{30}{(x_{i} - f)/r_i}]\cdot c_i+f$$
+去掉数据中心节点的充电计算
+
+$$x_{i} = [dst/v+\sum_{i=2}^{30}{(x_{i} - f)/r_i}]\cdot c_i+f$$
 
 ### 根据约束条件得出线性方程组
-组合结果：
+组合结果为一个29*29的矩阵：
 
 $$
 \left[ \begin{array}{l}
-	\boldsymbol{x}_1\\
+	\boldsymbol{x}_2\\
 	\vdots\\
 	\boldsymbol{x}_{30}\\
 \end{array} \right] =\left[ \begin{array}{c}
-	\frac{\boldsymbol{dst}\cdot \boldsymbol{c}_1}{\boldsymbol{v}}\\
+	\frac{\boldsymbol{dst}\cdot \boldsymbol{c}_2}{\boldsymbol{v}}+\boldsymbol{f}-\frac{\boldsymbol{f}\cdot \boldsymbol{c}_2}{\boldsymbol{r}}-\cdots -\frac{\boldsymbol{f}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}}\\
 	\vdots\\
-	\frac{\boldsymbol{dst}\cdot \boldsymbol{c}_{30}}{\boldsymbol{v}}\\
+	\frac{\boldsymbol{dst}\cdot \boldsymbol{c}_{30}}{\boldsymbol{v}}+\boldsymbol{f}-\frac{\boldsymbol{f}\cdot \boldsymbol{c}_2}{\boldsymbol{r}}-\cdots -\frac{\boldsymbol{f}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}}\\
 \end{array} \right] +\left[ \begin{array}{c}
-	\boldsymbol{f}\\
+	\frac{\boldsymbol{x}_2\cdot \boldsymbol{c}_2}{\boldsymbol{r}}+\cdots +\frac{\boldsymbol{x}_{30}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}}\\
 	\vdots\\
-	\boldsymbol{f}\\
-\end{array} \right] +\left[ \begin{array}{c}
-	\frac{\boldsymbol{x}_1\cdot \boldsymbol{c}_1-\boldsymbol{f}\cdot \boldsymbol{c}_1}{\boldsymbol{r}_1}+\cdots +\frac{\boldsymbol{x}_{30}\cdot \boldsymbol{c}_{30}-\boldsymbol{f}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}\\
-	\vdots\\
-	\frac{\boldsymbol{x}_1\cdot \boldsymbol{c}_1-\boldsymbol{f}\cdot \boldsymbol{c}_1}{\boldsymbol{r}_1}+\cdots +\frac{\boldsymbol{x}_{30}\cdot \boldsymbol{c}_{30}-\boldsymbol{f}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}\\
+	\frac{\boldsymbol{x}_2\cdot \boldsymbol{c}_2}{\boldsymbol{r}}+\cdots +\frac{\boldsymbol{x}_{30}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}}\\
 \end{array} \right] 
 $$
+
 
 化简：
 
 $$
 \left[ \begin{array}{l}
-	\boldsymbol{x}_1\\
+	\boldsymbol{x}_2\\
 	\vdots\\
 	\boldsymbol{x}_{30}\\
 \end{array} \right] =\left[ \begin{array}{c}
-	\frac{\boldsymbol{dst}\cdot \boldsymbol{c}_1}{\boldsymbol{v}}+\boldsymbol{f}-\frac{\boldsymbol{f}\cdot \boldsymbol{c}_1}{\boldsymbol{r}_1}-\cdots -\frac{\boldsymbol{f}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}\\
+	\frac{\boldsymbol{dst}\cdot \boldsymbol{c}_2}{\boldsymbol{v}}+\boldsymbol{f}-\frac{\boldsymbol{f}\cdot \boldsymbol{c}_2}{\boldsymbol{r}_2}-\cdots -\frac{\boldsymbol{f}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}\\
 	\vdots\\
-	\frac{\boldsymbol{dst}\cdot \boldsymbol{c}_{30}}{\boldsymbol{v}}+\boldsymbol{f}-\frac{\boldsymbol{f}\cdot \boldsymbol{c}_1}{\boldsymbol{r}_1}-\cdots -\frac{\boldsymbol{f}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}\\
+	\frac{\boldsymbol{dst}\cdot \boldsymbol{c}_{30}}{\boldsymbol{v}}+\boldsymbol{f}-\frac{\boldsymbol{f}\cdot \boldsymbol{c}_2}{\boldsymbol{r}_2}-\cdots -\frac{\boldsymbol{f}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}\\
 \end{array} \right] +\left[ \begin{array}{c}
-	\frac{\boldsymbol{x}_1\cdot \boldsymbol{c}_1}{\boldsymbol{r}_1}+\cdots +\frac{\boldsymbol{x}_{30}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}\\
+	\frac{\boldsymbol{x}_2\cdot \boldsymbol{c}_2}{\boldsymbol{r}_2}+\cdots +\frac{\boldsymbol{x}_{30}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}\\
 	\vdots\\
-	\frac{\boldsymbol{x}_1\cdot \boldsymbol{c}_1}{\boldsymbol{r}_1}+\cdots +\frac{\boldsymbol{x}_{30}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}\\
+	\frac{\boldsymbol{x}_2\cdot \boldsymbol{c}_2}{\boldsymbol{r}_2}+\cdots +\frac{\boldsymbol{x}_{30}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}\\
 \end{array} \right] 
 $$
 
@@ -114,34 +114,35 @@ $$
 
 $$
 \left[ \begin{matrix}
-	\frac{\boldsymbol{c}_1}{\boldsymbol{r}_1}-1&		\cdots&		\frac{\boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}\\
+	\frac{\boldsymbol{c}_2}{\boldsymbol{r}}-2&		\cdots&		\frac{\boldsymbol{c}_{30}}{\boldsymbol{r}}\\
 	\vdots&		\ddots&		\vdots\\
-	\frac{\boldsymbol{c}_1}{\boldsymbol{r}_1}&		\cdots&		\frac{\boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}-1\\
+	\frac{\boldsymbol{c}_2}{\boldsymbol{r}}&		\cdots&		\frac{\boldsymbol{c}_{30}}{\boldsymbol{r}}-2\\
 \end{matrix} \right] \cdot \left[ \begin{array}{l}
-	\boldsymbol{x}_1\\
+	\boldsymbol{x}_2\\
 	\vdots\\
 	\boldsymbol{x}_{30}\\
 \end{array} \right] =-\left[ \begin{array}{c}
-	\frac{\boldsymbol{dst}\cdot \boldsymbol{c}_1}{\boldsymbol{v}}+\boldsymbol{f}-\frac{\boldsymbol{f}\cdot \boldsymbol{c}_1}{\boldsymbol{r}_1}-\cdots -\frac{\boldsymbol{f}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}\\
+	\frac{\boldsymbol{dst}\cdot \boldsymbol{c}_2}{\boldsymbol{v}}+\boldsymbol{f}-\frac{\boldsymbol{f}\cdot \boldsymbol{c}_2}{\boldsymbol{r}}-\cdots -\frac{\boldsymbol{f}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}}\\
 	\vdots\\
-	\frac{\boldsymbol{dst}\cdot \boldsymbol{c}_{30}}{\boldsymbol{v}}+\boldsymbol{f}-\frac{\boldsymbol{f}\cdot \boldsymbol{c}_1}{\boldsymbol{r}_1}-\cdots -\frac{\boldsymbol{f}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}\\
+	\frac{\boldsymbol{dst}\cdot \boldsymbol{c}_{30}}{\boldsymbol{v}}+\boldsymbol{f}-\frac{\boldsymbol{f}\cdot \boldsymbol{c}_2}{\boldsymbol{r}}-\cdots -\frac{\boldsymbol{f}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}}\\
 \end{array} \right] 
 $$
+
 
 其中 
 
 
 $$
 \boldsymbol{A}=\left[ \begin{matrix}
-	\frac{\boldsymbol{c}_1}{\boldsymbol{r}_1}-1&		\cdots&		\frac{\boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}\\
+	\frac{\boldsymbol{c}_2}{\boldsymbol{r}}-2&		\cdots&		\frac{\boldsymbol{c}_{30}}{\boldsymbol{r}}\\
 	\vdots&		\ddots&		\vdots\\
-	\frac{\boldsymbol{c}_1}{\boldsymbol{r}_1}&		\cdots&		\frac{\boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}-1\\
+	\frac{\boldsymbol{c}_2}{\boldsymbol{r}}&		\cdots&		\frac{\boldsymbol{c}_{30}}{\boldsymbol{r}}-2\\
 \end{matrix} \right] 
 
 ，
 \boldsymbol{b}=-\left[ \begin{array}{c}
-	\frac{\boldsymbol{dst}\cdot \boldsymbol{c}_1}{\boldsymbol{v}}+\boldsymbol{f}-\frac{\boldsymbol{f}\cdot \boldsymbol{c}_1}{\boldsymbol{r}_1}-\cdots -\frac{\boldsymbol{f}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}\\
+	\frac{\boldsymbol{dst}\cdot \boldsymbol{c}_2}{\boldsymbol{v}}+\boldsymbol{f}-\frac{\boldsymbol{f}\cdot \boldsymbol{c}_2}{\boldsymbol{r}}-\cdots -\frac{\boldsymbol{f}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}}\\
 	\vdots\\
-	\frac{\boldsymbol{dst}\cdot \boldsymbol{c}_{30}}{\boldsymbol{v}}+\boldsymbol{f}-\frac{\boldsymbol{f}\cdot \boldsymbol{c}_1}{\boldsymbol{r}_1}-\cdots -\frac{\boldsymbol{f}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}\\
+	\frac{\boldsymbol{dst}\cdot \boldsymbol{c}_{30}}{\boldsymbol{v}}+\boldsymbol{f}-\frac{\boldsymbol{f}\cdot \boldsymbol{c}_2}{\boldsymbol{r}}-\cdots -\frac{\boldsymbol{f}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}}\\
 \end{array} \right] 
 $$
