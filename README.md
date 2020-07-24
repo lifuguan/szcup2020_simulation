@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 10:35:16
- * @LastEditTime: 2020-07-24 15:56:08
+ * @LastEditTime: 2020-07-24 16:37:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \szcup2020_simulation\README.md
@@ -71,6 +71,7 @@ $$x_{i} = [dst/v+\sum_{i=1}^{30}{(x_{i} - f)/r_i}]\cdot c_i+f$$
 
 ### 根据约束条件得出线性方程组
 组合结果：
+
 $$
 \left[ \begin{array}{l}
 	\boldsymbol{x}_1\\
@@ -90,7 +91,9 @@ $$
 	\frac{\boldsymbol{x}_1\cdot \boldsymbol{c}_1-\boldsymbol{f}\cdot \boldsymbol{c}_1}{\boldsymbol{r}_1}+\cdots +\frac{\boldsymbol{x}_{30}\cdot \boldsymbol{c}_{30}-\boldsymbol{f}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}\\
 \end{array} \right] 
 $$
+
 化简：
+
 $$
 \left[ \begin{array}{l}
 	\boldsymbol{x}_1\\
@@ -104,5 +107,41 @@ $$
 	\frac{\boldsymbol{x}_1\cdot \boldsymbol{c}_1}{\boldsymbol{r}_1}+\cdots +\frac{\boldsymbol{x}_{30}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}\\
 	\vdots\\
 	\frac{\boldsymbol{x}_1\cdot \boldsymbol{c}_1}{\boldsymbol{r}_1}+\cdots +\frac{\boldsymbol{x}_{30}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}\\
+\end{array} \right] 
+$$
+
+转化成$A\cdot X = b$形式：
+
+$$
+\left[ \begin{matrix}
+	\frac{\boldsymbol{c}_1}{\boldsymbol{r}_1}-1&		\cdots&		\frac{\boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}\\
+	\vdots&		\ddots&		\vdots\\
+	\frac{\boldsymbol{c}_1}{\boldsymbol{r}_1}&		\cdots&		\frac{\boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}-1\\
+\end{matrix} \right] \cdot \left[ \begin{array}{l}
+	\boldsymbol{x}_1\\
+	\vdots\\
+	\boldsymbol{x}_{30}\\
+\end{array} \right] =-\left[ \begin{array}{c}
+	\frac{\boldsymbol{dst}\cdot \boldsymbol{c}_1}{\boldsymbol{v}}+\boldsymbol{f}-\frac{\boldsymbol{f}\cdot \boldsymbol{c}_1}{\boldsymbol{r}_1}-\cdots -\frac{\boldsymbol{f}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}\\
+	\vdots\\
+	\frac{\boldsymbol{dst}\cdot \boldsymbol{c}_{30}}{\boldsymbol{v}}+\boldsymbol{f}-\frac{\boldsymbol{f}\cdot \boldsymbol{c}_1}{\boldsymbol{r}_1}-\cdots -\frac{\boldsymbol{f}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}\\
+\end{array} \right] 
+$$
+
+其中 
+
+
+$$
+\boldsymbol{A}=\left[ \begin{matrix}
+	\frac{\boldsymbol{c}_1}{\boldsymbol{r}_1}-1&		\cdots&		\frac{\boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}\\
+	\vdots&		\ddots&		\vdots\\
+	\frac{\boldsymbol{c}_1}{\boldsymbol{r}_1}&		\cdots&		\frac{\boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}-1\\
+\end{matrix} \right] 
+
+，
+\boldsymbol{b}=-\left[ \begin{array}{c}
+	\frac{\boldsymbol{dst}\cdot \boldsymbol{c}_1}{\boldsymbol{v}}+\boldsymbol{f}-\frac{\boldsymbol{f}\cdot \boldsymbol{c}_1}{\boldsymbol{r}_1}-\cdots -\frac{\boldsymbol{f}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}\\
+	\vdots\\
+	\frac{\boldsymbol{dst}\cdot \boldsymbol{c}_{30}}{\boldsymbol{v}}+\boldsymbol{f}-\frac{\boldsymbol{f}\cdot \boldsymbol{c}_1}{\boldsymbol{r}_1}-\cdots -\frac{\boldsymbol{f}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}_{30}}\\
 \end{array} \right] 
 $$
