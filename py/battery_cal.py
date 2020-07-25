@@ -1,7 +1,7 @@
 '''
 @Author: lifuguan
 @Date: 2020-07-23 19:17:56
-@LastEditTime: 2020-07-25 08:50:17
+@LastEditTime: 2020-07-25 09:42:23
 @LastEditors: Please set LastEditors
 @Description: In User Settings Edit
 @FilePath: \szcup2020_simulation\py\battery_cal.py
@@ -62,6 +62,27 @@ def symbolic(data):
     data['dst'] = 39305
     data['r'] = sympy.symbols("r", integer = True)
     data['f'] = sympy.symbols("f", integer = True)
+
+    # get matrix A and transfer to symbolic matrix M
+    A = np.ones([29,29], dtype = float).tolist()
+    diagonal = np.eye(29).tolist()
+    for i in range(29):
+        for j in range(29):
+            A[i][j] = data['consumes'][j] / data['r'] - diagonal[i][j]
+    M = sympy.Matrix(A)
+
+    # get matrix b and transfer to symbolic matrix b
+    b = np.ones([29,1], dtype=float).tolist()
+    for i in range(29):
+        b[i][0] = -data['dst']*data['consumes'][i]/data['velocity']+data['f']
+        for j in range(29):
+            b[i][0] = b[i][0] + data['f']*data['consumes'][i]/data['r']
+    b = sympy.Matrix(b)
+
+    # LU solver
+    x = M.LUsolve(b)
+    return x
+
 #%% main function
 
 if __name__ == '__main__':
@@ -69,7 +90,7 @@ if __name__ == '__main__':
     data['consumes'] = read_data_model()
 
     options = {"numerical":1, "symbolic":2}
-    option = 1
+    option = 2
     if option == options['numerical']:
         x = numerical(data)
     elif option == options['symbolic']:

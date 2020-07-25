@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-13 10:35:16
- * @LastEditTime: 2020-07-25 09:01:51
+ * @LastEditTime: 2020-07-25 09:44:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \szcup2020_simulation\README.md
@@ -184,3 +184,8 @@ $$
 | 26    | 1590.977         |
 | 27    | 2691.436         |
 | 28    | 2298.415         |
+
+
+## 第二问：符号解法（symbolic）
+
+代码已经实现，但是矩阵渲染太大导致计算机崩溃，故此可以得出利用符号解求解该问题并没有意义。
