@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
- * @Date: 2020-07-23 10:35:16
- * @LastEditTime: 2020-07-24 19:45:05
+ * @Date: 2020-07-13 10:35:16
+ * @LastEditTime: 2020-07-25 09:01:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \szcup2020_simulation\README.md
@@ -48,13 +48,13 @@ Distance: 39305m
 ```
 ![](img/1/global_shortest.svg)
 
-## 第二问
+## 第二问：数值解法（numerical）
 
 要使传感器一直工作的最低要求：在移动电源走完一整个回路后，电池容量刚好达到最低要求为最优
 
 假设初始条件：当到达该节点时，剩余电池容量刚好为最低要求
 
-### 参数
+### 参数定义
   
 - $x_1,x_2,\cdots,x_{30}$：假设每个节点的电池容量
 - $c_1,c_2,\cdots,c_{30}$：每个节点的电池消耗速度
@@ -114,9 +114,9 @@ $$
 
 $$
 \left[ \begin{matrix}
-	\frac{\boldsymbol{c}_2}{\boldsymbol{r}}-2&		\cdots&		\frac{\boldsymbol{c}_{30}}{\boldsymbol{r}}\\
+	\frac{\boldsymbol{c}_2}{\boldsymbol{r}}-1&		\cdots&		\frac{\boldsymbol{c}_{30}}{\boldsymbol{r}}\\
 	\vdots&		\ddots&		\vdots\\
-	\frac{\boldsymbol{c}_2}{\boldsymbol{r}}&		\cdots&		\frac{\boldsymbol{c}_{30}}{\boldsymbol{r}}-2\\
+	\frac{\boldsymbol{c}_2}{\boldsymbol{r}}&		\cdots&		\frac{\boldsymbol{c}_{30}}{\boldsymbol{r}}-1\\
 \end{matrix} \right] \cdot \left[ \begin{array}{l}
 	\boldsymbol{x}_2\\
 	\vdots\\
@@ -134,9 +134,9 @@ $$
 
 $$
 \boldsymbol{A}=\left[ \begin{matrix}
-	\frac{\boldsymbol{c}_2}{\boldsymbol{r}}-2&		\cdots&		\frac{\boldsymbol{c}_{30}}{\boldsymbol{r}}\\
+	\frac{\boldsymbol{c}_2}{\boldsymbol{r}}-1&		\cdots&		\frac{\boldsymbol{c}_{30}}{\boldsymbol{r}}\\
 	\vdots&		\ddots&		\vdots\\
-	\frac{\boldsymbol{c}_2}{\boldsymbol{r}}&		\cdots&		\frac{\boldsymbol{c}_{30}}{\boldsymbol{r}}-2\\
+	\frac{\boldsymbol{c}_2}{\boldsymbol{r}}&		\cdots&		\frac{\boldsymbol{c}_{30}}{\boldsymbol{r}}-1\\
 \end{matrix} \right] 
 
 ，
@@ -146,3 +146,41 @@ $$
 	\frac{\boldsymbol{dst}\cdot \boldsymbol{c}_{30}}{\boldsymbol{v}}+\boldsymbol{f}-\frac{\boldsymbol{f}\cdot \boldsymbol{c}_2}{\boldsymbol{r}}-\cdots -\frac{\boldsymbol{f}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}}\\
 \end{array} \right] 
 $$
+
+### 参数设置
+1. 速度$v=100m/s$
+2. 充电速度$r = 2000mA/s$
+3. 最低工作值$f=4mA$
+
+### 数值解结果
+| nodes | battery capacity |
+|:-----:|------------------|
+|   0   | 2298.415         |
+|   1   | 3241.665         |
+| 2     | 1944.696         |
+| 3     | 2337.717         |
+| 4     | 1590.977         |
+| 5     | 1944.696         |
+| 6     | 2691.436         |
+| 7     | 1983.998         |
+| 8     | 1944.696         |
+| 9     | 2337.717         |
+| 10    | 1944.696         |
+| 11    | 3084.457         |
+| 12    | 2730.738         |
+| 13    | 1944.696         |
+| 14    | 1669.581         |
+| 15    | 1944.696         |
+| 16    | 2337.717         |
+| 17    | 3123.759         |
+| 18    | 2337.717         |
+| 19    | 1944.696         |
+| 20    | 1551.675         |
+| 21    | 2337.717         |
+| 22    | 3123.759         |
+| 23    | 1551.675         |
+| 24    | 2337.717         |
+| 25    | 1866.092         |
+| 26    | 1590.977         |
+| 27    | 2691.436         |
+| 28    | 2298.415         |

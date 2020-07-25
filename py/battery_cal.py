@@ -1,7 +1,7 @@
 '''
 @Author: lifuguan
 @Date: 2020-07-23 19:17:56
-@LastEditTime: 2020-07-24 20:36:21
+@LastEditTime: 2020-07-25 08:50:17
 @LastEditors: Please set LastEditors
 @Description: In User Settings Edit
 @FilePath: \szcup2020_simulation\py\battery_cal.py
@@ -40,20 +40,21 @@ def get_A_matrix(data):
 def get_b_maatrix(data):
     b = np.ones([29,1], dtype=float)
     for i in range(29):
-        b[i][0] = data['dst']*data['consumes'][i]/data['velocity']+data['f']
+        b[i][0] = -data['dst']*data['consumes'][i]/data['velocity']+data['f']
         for j in range(29):
-            b[i][0] = b[i][0] - data['f']*data['consumes'][i]/data['r']
+            b[i][0] = b[i][0] + data['f']*data['consumes'][i]/data['r']
     return b
 
 #%% numerical solution
 def numerical(data):
     data['velocity'] = 100
     data['dst'] = 39305
-    data['r'] = 1 
-    data['f'] = 4
+    data['r'] = 2000
+    data['f'] = 2
     A = get_A_matrix(data)
     b = get_b_maatrix(data)
     x = linalg.solve(A, b)
+    return x
 
 #%% symbolic solution
 def symbolic(data):
@@ -68,11 +69,11 @@ if __name__ == '__main__':
     data['consumes'] = read_data_model()
 
     options = {"numerical":1, "symbolic":2}
-    option = 2
-    if option == option['numerical']:
-        numerical(data)
-    elif option == option['symbolic']:
-        symbolic(data)
+    option = 1
+    if option == options['numerical']:
+        x = numerical(data)
+    elif option == options['symbolic']:
+        x = symbolic(data)
     else:
         print("WARN!!!")
 #%%
