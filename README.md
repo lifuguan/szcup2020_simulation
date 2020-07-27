@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-13 10:35:16
- * @LastEditTime: 2020-07-25 09:44:52
+ * @LastEditTime: 2020-07-27 12:19:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \szcup2020_simulation\README.md
@@ -137,9 +137,7 @@ $$
 	\frac{\boldsymbol{c}_2}{\boldsymbol{r}}-1&		\cdots&		\frac{\boldsymbol{c}_{30}}{\boldsymbol{r}}\\
 	\vdots&		\ddots&		\vdots\\
 	\frac{\boldsymbol{c}_2}{\boldsymbol{r}}&		\cdots&		\frac{\boldsymbol{c}_{30}}{\boldsymbol{r}}-1\\
-\end{matrix} \right] 
-
-，
+\end{matrix} \right] ，
 \boldsymbol{b}=-\left[ \begin{array}{c}
 	\frac{\boldsymbol{dst}\cdot \boldsymbol{c}_2}{\boldsymbol{v}}+\boldsymbol{f}-\frac{\boldsymbol{f}\cdot \boldsymbol{c}_2}{\boldsymbol{r}}-\cdots -\frac{\boldsymbol{f}\cdot \boldsymbol{c}_{30}}{\boldsymbol{r}}\\
 	\vdots\\
@@ -189,3 +187,42 @@ $$
 ## 第二问：符号解法（symbolic）
 
 代码已经实现，但是矩阵渲染太大导致计算机崩溃，故此可以得出利用符号解求解该问题并没有意义。
+
+
+## 第三问
+
+### 标准模型
+由于有多辆车进行运送，要是以最小化路径为目标函数，可能会造成某辆车的运送时间过长而导致总时间并不是最短的。所以目标函数应为：若设车队的运送时间为$T = {t_1,t_2,t_3,t_4}$，车队的运输路径长度$L = {l_1, l_2, l_3, l_4}$。则最小化$T$中最大的值，也可以解释为最小化$T$中的最大值。综上所述，该问为有时间窗车辆路径问题（vehicle routing problems with time windows）。
+$$
+\min \left\{ \max \left\{ \boldsymbol{t}_1,\boldsymbol{t}_2,\boldsymbol{t}_3,\boldsymbol{t}_4 \right\} \right\} 
+$$
+
+### 方法一
+#### 参数设置
+1. 速度：$v=100m/s$
+2. 每辆车最多运行时间：$180s$
+3. 每个节点的时间窗：$[0, 39305 / 100 / 2]$
+
+#### 运行结果
+```
+Route for vehicle 0:
+0 Time(0,0) -> 0 Time(0,0)
+Time of the route: 0 seconds
+
+Route for vehicle 1:
+0 Time(0,0) -> 10 Time(5,5) -> 16 Time(11,11) -> 27 Time(20,20) -> 12 Time(30,30) -> 9 Time(45,45) -> 26 Time(68,68) -> 19 Time(88,88) -> 29 Time(114,114) -> 0 Time(128,128)
+Time of the route: 128 seconds
+
+Route for vehicle 2:
+0 Time(0,0) -> 2 Time(12,12) -> 1 Time(19,19) -> 8 Time(29,29) -> 15 Time(39,39) -> 11 Time(54,54) -> 6 Time(61,61) -> 14 Time(72,72) -> 25 Time(93,93) -> 18 Time(116,116) -> 7 Time(127,127) -> 20 Time(145,145) -> 17 Time(165,165) -> 0 Time(177,177)
+Time of the route: 177 seconds
+
+Route for vehicle 3:
+0 Time(0,0) -> 21 Time(27,27) -> 23 Time(51,51) -> 28 Time(81,81) -> 24 Time(85,85) -> 22 Time(114,114) -> 3 Time(129,129) -> 4 Time(138,138) -> 5 Time(156,156) -> 13 Time(162,162) -> 0 Time(172,172)
+Time of the route: 172 seconds
+Maximum time : 172 seconds
+```
+![](img/3/3.png)
+
+#### 缺点分析
+1. 少了一辆车，不会是最优解

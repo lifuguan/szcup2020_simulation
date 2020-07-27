@@ -1,7 +1,7 @@
 '''
 @Author: lifuguan
 @Date: 2020-07-23 10:10:22
-@LastEditTime: 2020-07-23 17:25:43
+@LastEditTime: 2020-07-27 10:55:00
 @LastEditors: Please set LastEditors
 @Description: The solution of Shen Zhen Cup 2020 Problem C
 @FilePath: \szcup2020_simulation\py\tsp.py
@@ -81,7 +81,7 @@ if __name__ == '__main__':
     options={'computational':1, 'optimal':2}
 
     data = read_data_model()
-        # plot on the screen
+    # plot on the screen
     locationsList = np.array(data['locations'])
 
     # visualize the nodes
