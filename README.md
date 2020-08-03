@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-13 10:35:16
- * @LastEditTime: 2020-08-03 09:29:04
+ * @LastEditTime: 2020-08-03 09:51:22
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \szcup2020_simulation\README.md
@@ -219,9 +219,9 @@ $$
 
 ### 方法一
 #### 参数设置
-1. 速度：$v=100m/s$
-2. 每辆车最多运行时间：$180s$
-3. 每个节点的时间窗：$[0, 39305 / 100 / 2]$
+1. 速度：$v=50m/s$
+2. 每辆车最多运行时间：$100s$
+3. 每个节点的时间窗：$[0, 70]$
 
 #### 运行结果
 ```

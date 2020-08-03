@@ -7,7 +7,7 @@ import xlrd, math
 import sys
 import matplotlib.pyplot as plt
 import numpy as np
-
+from geopy.distance import geodesic
 #%% read data from xlsx
 def read_data_model():
     """Stores the data for the problem."""
@@ -24,7 +24,7 @@ def read_data_model():
         if i == 1:
             data['timeWindows'].append((0, 0))
         else:
-            data['timeWindows'].append((0, int((12100) / 100 / 2)))
+            data['timeWindows'].append((0, 70))
     
     data['locations'] = []
     for i in range(1, rowNum):
@@ -39,7 +39,7 @@ def read_data_model():
                 data['timeMatrix'][fromCounter][toCounter] = 0
             else:
                 # data['timeMatrix']  = distance / velocity
-                data['timeMatrix'][fromCounter][toCounter] = int(geodesic(fromNode, toNode).meters) / data['velocity'])
+                data['timeMatrix'][fromCounter][toCounter] = int(geodesic(fromNode, toNode).meters / data['velocity'])
 
     # the number of vehicles of the fleet.
     data['numVehicles'] = 4
@@ -136,7 +136,7 @@ time = 'Time'
 routing.AddDimension(
     transit_callback_index,
     10,  # allow waiting time
-    180,  # maximum time per vehicle
+    100,  # maximum time per vehicle
     False,  # Don't force start cumul to zero.
     time)
 time_dimension = routing.GetDimensionOrDie(time)
