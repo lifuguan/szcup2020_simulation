@@ -24,7 +24,7 @@ def read_data_model():
         if i == 1:
             data['timeWindows'].append((0, 0))
         else:
-            data['timeWindows'].append((0, 70))
+            data['timeWindows'].append((0, 68))
     
     data['locations'] = []
     for i in range(1, rowNum):
@@ -102,9 +102,6 @@ def print_solution(data, manager, routing, solution):
 
 
 #%%
-
-
-
 """Solve the VRP with time windows."""
 # Instantiate the data problem.
 data = read_data_model()
@@ -136,7 +133,7 @@ time = 'Time'
 routing.AddDimension(
     transit_callback_index,
     10,  # allow waiting time
-    100,  # maximum time per vehicle
+    95,  # maximum time per vehicle
     False,  # Don't force start cumul to zero.
     time)
 time_dimension = routing.GetDimensionOrDie(time)
@@ -170,7 +167,10 @@ search_parameters.log_search = True
 
 # Solve the problem.
 solution = routing.SolveWithParameters(search_parameters)
-
+#%%
 # Print solution on console.
 if solution:
     print_solution(data, manager, routing, solution)
+
+
+# %%

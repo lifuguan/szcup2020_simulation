@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-13 10:35:16
- * @LastEditTime: 2020-08-03 09:51:22
+ * @LastEditTime: 2020-08-03 10:56:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \szcup2020_simulation\README.md
@@ -220,29 +220,27 @@ $$
 ### 方法一
 #### 参数设置
 1. 速度：$v=50m/s$
-2. 每辆车最多运行时间：$100s$
+2. 每辆车最多运行时间：$80s$
 3. 每个节点的时间窗：$[0, 70]$
 
 #### 运行结果
 ```
 Route for vehicle 0:
-0 Time(0,0) -> 0 Time(0,0)
-Time of the route: 0 seconds
+0 Time(0,0) -> 1 Time(5,5) -> 9 Time(11,11) -> 7 Time(15,15) -> 6 Time(21,21) -> 11 Time(26,26) -> 14 Time(31,31) -> 15 Time(39,39) -> 12 Time(44,44) -> 8 Time(48,48) -> 2 Time(55,55) -> 0 Time(59,59)
+Time of the route: 59 seconds
 
 Route for vehicle 1:
-0 Time(0,0) -> 10 Time(5,5) -> 16 Time(11,11) -> 27 Time(20,20) -> 12 Time(30,30) -> 9 Time(45,45) -> 26 Time(68,68) -> 19 Time(88,88) -> 29 Time(114,114) -> 0 Time(128,128)
-Time of the route: 128 seconds
+0 Time(0,0) -> 4 Time(8,8) -> 21 Time(15,15) -> 22 Time(21,21) -> 23 Time(27,27) -> 24 Time(35,35) -> 28 Time(43,43) -> 3 Time(56,56) -> 0 Time(66,66)
+Time of the route: 66 seconds
 
 Route for vehicle 2:
-0 Time(0,0) -> 2 Time(12,12) -> 1 Time(19,19) -> 8 Time(29,29) -> 15 Time(39,39) -> 11 Time(54,54) -> 6 Time(61,61) -> 14 Time(72,72) -> 25 Time(93,93) -> 18 Time(116,116) -> 7 Time(127,127) -> 20 Time(145,145) -> 17 Time(165,165) -> 0 Time(177,177)
-Time of the route: 177 seconds
+0 Time(0,0) -> 17 Time(8,8) -> 19 Time(16,16) -> 29 Time(27,27) -> 26 Time(39,39) -> 25 Time(50,50) -> 18 Time(60,60) -> 20 Time(67,67) -> 0 Time(77,77)
+Time of the route: 77 seconds
 
 Route for vehicle 3:
-0 Time(0,0) -> 21 Time(27,27) -> 23 Time(51,51) -> 28 Time(81,81) -> 24 Time(85,85) -> 22 Time(114,114) -> 3 Time(129,129) -> 4 Time(138,138) -> 5 Time(156,156) -> 13 Time(162,162) -> 0 Time(172,172)
-Time of the route: 172 seconds
-Maximum time : 172 seconds
+0 Time(0,0) -> 10 Time(10,10) -> 16 Time(18,18) -> 27 Time(28,28) -> 13 Time(42,42) -> 5 Time(50,50) -> 0 Time(57,57)
+Time of the route: 57 seconds
+
+Total time of all routes: 259min
 ```
 ![](img/3/3.png)
-
-#### 缺点分析
-1. 少了一辆车，不会是最优解
