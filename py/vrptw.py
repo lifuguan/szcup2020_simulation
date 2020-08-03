@@ -16,7 +16,7 @@ def read_data_model():
     rowNum = table.nrows
     colNum = table.ncols
     data = {}
-    data['velocity'] = 100
+    data['velocity'] = 50
 
     # time windows : An array of time windows for the locations.
     data['timeWindows'] = []
@@ -24,11 +24,11 @@ def read_data_model():
         if i == 1:
             data['timeWindows'].append((0, 0))
         else:
-            data['timeWindows'].append((0, int((39305) / 100 / 2)))
+            data['timeWindows'].append((0, int((12100) / 100 / 2)))
     
     data['locations'] = []
     for i in range(1, rowNum):
-        data['locations'].append([(table.cell_value(i,1) - 120)*708883, (table.cell_value(i,2) - 36)*111194])
+        data['locations'].append([table.cell_value(i,2), table.cell_value(i,1)])
 
     # time matrix : An array of travel times between locations.
     data['timeMatrix'] = {}
@@ -39,7 +39,7 @@ def read_data_model():
                 data['timeMatrix'][fromCounter][toCounter] = 0
             else:
                 # data['timeMatrix']  = distance / velocity
-                data['timeMatrix'][fromCounter][toCounter] = int(math.hypot(fromNode[0] - toNode[0], fromNode[1] - toNode[1]) / data['velocity'])
+                data['timeMatrix'][fromCounter][toCounter] = int(geodesic(fromNode, toNode).meters) / data['velocity'])
 
     # the number of vehicles of the fleet.
     data['numVehicles'] = 4

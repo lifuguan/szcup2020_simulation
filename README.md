@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-13 10:35:16
- * @LastEditTime: 2020-07-27 12:19:46
+ * @LastEditTime: 2020-08-03 09:29:04
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \szcup2020_simulation\README.md
@@ -19,7 +19,23 @@
 - numpy
 - math
 - sympy (符号计算)
+- - geopy（经纬度换算）
 ## 计算公式
+### 感谢大神指点，原方案的经纬度换算有问题，故换成`geopy`库来解决
+### 正确版本
+```python
+def compute_euclidean_distance_matrix(locations):
+    distances = {}
+    for fromCounter, fromNode in enumerate(locations):
+        distances[fromCounter] = {}
+        for toCounter, toNode in enumerate(locations):
+            if fromCounter == toCounter:
+                distances[fromCounter][toCounter] = 0
+            else:
+                distances[fromCounter][toCounter] = geodesic(fromNode, toNode).meters
+    return distances
+```
+### 先前错误版本
 - 经度（东西方向）1M实际度：31544206M*cos(纬度)/360°=
   
   $31544206\cdot\cos(latitude=36)/360 = 708883.29m/longtitude$
@@ -32,21 +48,24 @@
 
 #### 使用first solution strategy获得计算近似解
 求得结果
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200803090156651.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1ZJU1VBTF9TVFVESU8x,size_16,color_FFFFFF,t_70)
+
+
 ```bash
 Route:
-Route:
- 0 -> 10 -> 16 -> 27 -> 12 -> 8 -> 9 -> 15 -> 7 -> 11 -> 6 -> 14 -> 25 -> 18 -> 26 -> 19 -> 20 -> 1 -> 2 -> 17 -> 29 -> 21 -> 23 -> 24 -> 28 -> 22 -> 3 -> 4 -> 5 -> 13 -> 0
-Distance: 39410m
+ 0 -> 2 -> 1 -> 9 -> 7 -> 6 -> 11 -> 14 -> 15 -> 27 -> 16 -> 13 -> 12 -> 8 -> 10 -> 5 -> 3 -> 28 -> 24 -> 23 -> 29 -> 26 -> 25 -> 18 -> 19 -> 20 -> 17 -> 21 -> 22 -> 4 -> 0
+Distance: 12033m
 ```
-![](img/1/local_shortest.svg)
+
 #### 使用guided local search获得最优解
 求得结果
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200803090041558.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1ZJU1VBTF9TVFVESU8x,size_16,color_FFFFFF,t_70)
+
 ```bash
 Route:
- 0 -> 29 -> 17 -> 2 -> 1 -> 20 -> 19 -> 26 -> 18 -> 25 -> 14 -> 6 -> 11 -> 7 -> 15 -> 9 -> 8 -> 12 -> 27 -> 16 -> 10 -> 13 -> 5 -> 4 -> 3 -> 22 -> 28 -> 24 -> 23 -> 21 -> 0
-Distance: 39305m
+ 0 -> 2 -> 1 -> 9 -> 7 -> 6 -> 14 -> 11 -> 8 -> 12 -> 15 -> 27 -> 16 -> 13 -> 10 -> 5 -> 3 -> 4 -> 22 -> 28 -> 24 -> 23 -> 21 -> 29 -> 26 -> 25 -> 18 -> 19 -> 20 -> 17 -> 0       
+Distance: 11469m
 ```
-![](img/1/global_shortest.svg)
 
 ## 第二问：数值解法（numerical）
 
@@ -146,42 +165,43 @@ $$
 $$
 
 ### 参数设置
-1. 速度$v=100m/s$
-2. 充电速度$r = 2000mA/s$
-3. 最低工作值$f=4mA$
+1. 速度$v=50m/s$
+2. 充电速度$r = 200mA/s$
+3. 最低工作值$f=10mA$
 
 ### 数值解结果
 | nodes | battery capacity |
 |:-----:|------------------|
-|   0   | 2298.415         |
-|   1   | 3241.665         |
-| 2     | 1944.696         |
-| 3     | 2337.717         |
-| 4     | 1590.977         |
-| 5     | 1944.696         |
-| 6     | 2691.436         |
-| 7     | 1983.998         |
-| 8     | 1944.696         |
-| 9     | 2337.717         |
-| 10    | 1944.696         |
-| 11    | 3084.457         |
-| 12    | 2730.738         |
-| 13    | 1944.696         |
-| 14    | 1669.581         |
-| 15    | 1944.696         |
-| 16    | 2337.717         |
-| 17    | 3123.759         |
-| 18    | 2337.717         |
-| 19    | 1944.696         |
-| 20    | 1551.675         |
-| 21    | 2337.717         |
-| 22    | 3123.759         |
-| 23    | 1551.675         |
-| 24    | 2337.717         |
-| 25    | 1866.092         |
-| 26    | 1590.977         |
-| 27    | 2691.436         |
-| 28    | 2298.415         |
+|   0   | 5145.627         |
+|   1   | 5692.659         |
+| 2     | 4940.490         |
+| 3     | 5168.420         |
+| 4     | 4735.353         |
+| 5     | 4940.490         |
+| 6     | 5373.557         |
+| 7     | 4963.283         |
+| 8     | 4940.490         |
+| 9     | 5168.420         |
+| 10    | 4940.490         |
+| 11    | 5601.487         |
+| 12    | 5396.350         |
+| 13    | 4940.490         |
+| 14    | 4780.939         |
+| 15    | 4940.490         |
+| 16    | 5168.420         |
+| 17    | 5624.280         |
+| 18    | 5168.420         |
+| 19    | 4940.490         |
+| 20    | 4712.560         |
+| 21    | 5168.420         |
+| 22    | 5624.280         |
+| 23    | 4712.560         |
+| 24    | 5168.420         |
+| 25    | 4894.904         |
+| 26    | 4735.353         |
+| 27    | 5373.557         |
+| 28    | 5145.627         |
+
 
 
 ## 第二问：符号解法（symbolic）

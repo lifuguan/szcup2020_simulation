@@ -1,7 +1,7 @@
 '''
 @Author: lifuguan
 @Date: 2020-07-23 19:17:56
-@LastEditTime: 2020-07-25 09:42:23
+@LastEditTime: 2020-08-03 09:20:33
 @LastEditors: Please set LastEditors
 @Description: In User Settings Edit
 @FilePath: \szcup2020_simulation\py\battery_cal.py
@@ -47,10 +47,10 @@ def get_b_maatrix(data):
 
 #%% numerical solution
 def numerical(data):
-    data['velocity'] = 100
-    data['dst'] = 39305
-    data['r'] = 2000
-    data['f'] = 2
+    data['velocity'] = 50
+    data['dst'] = 11469
+    data['r'] = 200
+    data['f'] = 10
     A = get_A_matrix(data)
     b = get_b_maatrix(data)
     x = linalg.solve(A, b)
@@ -59,7 +59,7 @@ def numerical(data):
 #%% symbolic solution
 def symbolic(data):
     data['velocity'] = sympy.symbols("v", integer = True)
-    data['dst'] = 39305
+    data['dst'] = 12100
     data['r'] = sympy.symbols("r", integer = True)
     data['f'] = sympy.symbols("f", integer = True)
 
@@ -90,11 +90,14 @@ if __name__ == '__main__':
     data['consumes'] = read_data_model()
 
     options = {"numerical":1, "symbolic":2}
-    option = 2
+    option = 1
     if option == options['numerical']:
         x = numerical(data)
+        print(x)
     elif option == options['symbolic']:
         x = symbolic(data)
+        print(x)
     else:
         print("WARN!!!")
+    
 #%%

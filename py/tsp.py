@@ -1,7 +1,7 @@
 '''
 @Author: lifuguan
 @Date: 2020-07-23 10:10:22
-@LastEditTime: 2020-07-27 10:55:00
+@LastEditTime: 2020-08-03 09:01:12
 @LastEditors: Please set LastEditors
 @Description: The solution of Shen Zhen Cup 2020 Problem C
 @FilePath: \szcup2020_simulation\py\tsp.py
@@ -15,6 +15,7 @@ from ortools.constraint_solver import routing_enums_pb2
 from ortools.constraint_solver import pywrapcp
 import sys
 import matplotlib.pyplot as plt
+from geopy.distance import geodesic
 import numpy as np
 #%% read the data from xlsx
 def read_data_model():
@@ -24,11 +25,11 @@ def read_data_model():
     colNum = table.ncols
 
     data = {}
-    # Formation: (longtitude(m), latitude(m)) 
+    # Formation: (latitude(m), longtitude(m)) 
     data['locations'] = []
     for i in range(1, rowNum):
-        data['locations'].append([(table.cell_value(i,1) - 120)*708883, (table.cell_value(i,2) - 36)*111194])
-    dcLocation = [(table.cell_value(1,1) - 120)*708883, (table.cell_value(1,2) - 36)*111194]
+        data['locations'].append([table.cell_value(i,2), table.cell_value(i,1)])
+    
     # For TSP : indicate num_vehicles = 1
     data['num_vehicles'] = 1
     # depot : the start and end location for the route.
@@ -43,7 +44,7 @@ def compute_euclidean_distance_matrix(locations):
             if fromCounter == toCounter:
                 distances[fromCounter][toCounter] = 0
             else:
-                distances[fromCounter][toCounter] = math.hypot(fromNode[0] - toNode[0], fromNode[1] - toNode[1])
+                distances[fromCounter][toCounter] = geodesic(fromNode, toNode).meters
     return distances
 
 #%%
@@ -77,7 +78,7 @@ if __name__ == '__main__':
     plt.xlabel("longitude caption") 
     plt.ylabel("latitude caption") 
     # choose search strategy : 1 for computationally intractable; 2 for optimal
-    option = 2
+    option = 1
     options={'computational':1, 'optimal':2}
 
     data = read_data_model()
